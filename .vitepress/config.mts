@@ -48,6 +48,7 @@ export default defineConfig({
           { text: 'Prompt Types', link: '/shared/prompt-types' },
           { text: 'Dashboard', link: '/shared/dashboard' },
           { text: 'Semantic Caching', link: '/shared/semantic-caching' },
+          { text: 'CO₂ Methodology', link: '/shared/co2-methodology' },
         ],
       },
     ],
