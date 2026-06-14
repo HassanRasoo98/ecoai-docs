@@ -43,7 +43,7 @@ npm install eco-ai
 ```
 
 ```bash [pip]
-pip install ecoai
+pip install ecoai-python
 ```
 
 :::

@@ -257,7 +257,7 @@ Examples:
 ```bash
 python -m ecoai dashboard
 python -m ecoai dashboard --db /path/to/.ecoai/usage.db --port 8080 --no-browser
-ecoai dashboard  # after pip install ecoai
+ecoai dashboard  # after pip install ecoai-python
 ```
 
 ---

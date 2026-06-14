@@ -13,11 +13,11 @@ After EcoAI   →  1 real call + 37 cached  →  $0.11 spent  →  97% saved
 
 ## Packages
 
-| | npm (`eco-ai`) | Python (`ecoai`) |
+| | npm (`eco-ai`) | Python (`ecoai-python`) |
 |---|---|---|
-| Install | `npm install eco-ai` | `pip install ecoai` |
+| Install | `npm install eco-ai` | `pip install ecoai-python` |
 | Repo | `ecoai/` (this monorepo) | `ecoai-python/` |
-| Registry | [npmjs.com/package/eco-ai](https://www.npmjs.com/package/eco-ai) | [pypi.org/project/ecoai](https://pypi.org/project/ecoai) |
+| Registry | [npmjs.com/package/eco-ai](https://www.npmjs.com/package/eco-ai) | [pypi.org/project/ecoai-python](https://pypi.org/project/ecoai-python) |
 | Min version | Node 18+ | Python 3.10+ |
 
 ---

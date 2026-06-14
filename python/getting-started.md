@@ -1,16 +1,16 @@
-# Getting Started — Python SDK (`ecoai`)
+# Getting Started — Python SDK (`ecoai-python`)
 
 ## Install
 
 ```bash
-pip install ecoai
+pip install ecoai-python
 
 # With provider extras (install whichever you use)
-pip install "ecoai[openai]"      # OpenAI
-pip install "ecoai[anthropic]"   # Anthropic
-pip install "ecoai[gemini]"      # Google Gemini
-pip install "ecoai[redis]"       # Redis storage backend
-pip install "ecoai[all]"         # all of the above
+pip install "ecoai-python[openai]"      # OpenAI
+pip install "ecoai-python[anthropic]"   # Anthropic
+pip install "ecoai-python[gemini]"      # Google Gemini
+pip install "ecoai-python[redis]"       # Redis storage backend
+pip install "ecoai-python[all]"         # all of the above
 ```
 
 **Requirements**: Python 3.10+
@@ -149,7 +149,7 @@ Best for: unit tests, ephemeral processes. Cache is lost when the process exits.
 
 ### Redis
 ```python
-# Requires: pip install "ecoai[redis]"
+# Requires: pip install "ecoai-python[redis]"
 eco = EcoAI(
     client=client,
     storage="redis",

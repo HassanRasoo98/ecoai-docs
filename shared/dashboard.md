@@ -26,7 +26,7 @@ python -m ecoai dashboard --db /path/to/.ecoai/usage.db --port 8080
 # Suppress auto-opening the browser
 python -m ecoai dashboard --no-browser
 
-# After pip install ecoai
+# After pip install ecoai-python
 ecoai dashboard
 ```
 
