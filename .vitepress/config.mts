@@ -20,8 +20,8 @@ export default defineConfig({
       {
         text: 'GitHub',
         items: [
-          { text: 'JS SDK', link: 'https://github.com/hassan-rasool/ecoai' },
-          { text: 'Python SDK', link: 'https://github.com/hassan-rasool/ecoai-python' },
+          { text: 'JS SDK', link: 'https://github.com/HassanRasoo98/ecoai' },
+          { text: 'Python SDK', link: 'https://github.com/HassanRasoo98/ecoai-python' },
         ],
       },
     ],
@@ -56,7 +56,7 @@ export default defineConfig({
     ],
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/hassan-rasool/ecoai' },
+      { icon: 'github', link: 'https://github.com/HassanRasoo98/ecoai' },
     ],
 
     search: {
@@ -69,7 +69,7 @@ export default defineConfig({
     },
 
     editLink: {
-      pattern: 'https://github.com/hassan-rasool/ecoai-docs/edit/main/:path',
+      pattern: 'https://github.com/HassanRasoo98/ecoai-docs/edit/main/:path',
       text: 'Edit this page on GitHub',
     },
   },
