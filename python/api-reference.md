@@ -235,15 +235,30 @@ from ecoai import (
 ```python
 from ecoai import SemanticConfig
 
+# Default: uses OpenAI text-embedding-3-small
 config = SemanticConfig(
-    threshold=0.95,                          # cosine similarity threshold (0.0–1.0)
-    embedding_model="text-embedding-3-small", # OpenAI embedding model
+    threshold=0.95,                           # cosine similarity threshold (0.0–1.0)
+    embedding_model="text-embedding-3-small", # OpenAI embedding model (ignored if embed_fn set)
+)
+
+# Custom embedding function — any provider, any model
+config = SemanticConfig(
+    threshold=0.95,
+    embed_fn=lambda text: my_embedding_client.embed(text),
 )
 
 eco = EcoAI(client=client, semantic=config)
 ```
 
-Requires `openai` package and a valid `OPENAI_API_KEY` even when using Anthropic or Gemini.
+Fields:
+
+| Field | Type | Default | Description |
+|---|---|---|---|
+| `threshold` | `float` | `0.95` | Cosine similarity threshold (0.0–1.0) |
+| `embedding_model` | `str` | `"text-embedding-3-small"` | OpenAI model; ignored when `embed_fn` is set |
+| `embed_fn` | `Callable[[str], list[float]] \| None` | `None` | Custom embedding function. Takes prompt text, returns a float vector. When set, OpenAI is not used. |
+
+When `embed_fn` is `None`, requires the `openai` package and a valid `OPENAI_API_KEY` even when using Anthropic or Gemini.
 
 ### `EcoAIConfig` (internal)
 

@@ -8,6 +8,19 @@ npm install eco-ai
 
 **[eco-ai on npm](https://www.npmjs.com/package/eco-ai)**
 
+::: warning ESM / CommonJS compatibility
+`eco-ai` bundles both ESM (`.mjs`) and CJS (`.js`) builds. However, its default SQLite storage uses `better-sqlite3`, which is a **native CJS module**. If your project has `"type": "module"` in `package.json`, Node.js may try to load the ESM bundle and fail to resolve the CJS native module.
+
+**Fix:** Add `"type": "commonjs"` to your project's `package.json`, or use `.cjs` file extensions for your entry files.
+
+```json
+// package.json
+{ "type": "commonjs" }
+```
+
+This only applies to the default SQLite storage. If you use `storage: 'memory'` or `storage: 'redis'`, there is no CJS conflict.
+:::
+
 Install whichever provider SDKs you use:
 
 ```bash
@@ -301,13 +314,3 @@ Opens at `http://localhost:3001` by default. See [Dashboard](../shared/dashboard
 
 ---
 
-## CommonJS / ESM
-
-EcoAI ships both `dist/index.mjs` (ESM) and `dist/index.js` (CJS). `better-sqlite3` is a native CJS module. In projects with `"type": "module"`, ensure you're loading the CJS bundle:
-
-```json
-// package.json of consumer project — one option
-{ "type": "commonjs" }
-```
-
-Or use `.cjs` file extensions in your project.

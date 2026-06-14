@@ -8,7 +8,7 @@ Semantic caching lets EcoAI return a cached response even when the new prompt is
 
 ## How it works
 
-1. On every cache **miss**, EcoAI generates an embedding for the prompt text using `text-embedding-3-small`.
+1. On every cache **miss**, EcoAI generates an embedding for the prompt text (using OpenAI `text-embedding-3-small` by default, or your custom function).
 2. The embedding is stored alongside the cached response.
 3. On the next call, the new prompt is also embedded and its cosine similarity is computed against all stored embeddings.
 4. If any similarity score is ≥ the threshold (default 0.95), the closest match's cached response is returned — a **semantic hit**.
@@ -19,16 +19,28 @@ Semantic caching lets EcoAI return a cached response even when the new prompt is
 ## Enabling — npm SDK
 
 ```typescript
-// Simple on/off
+// Simple on/off (uses OpenAI text-embedding-3-small)
 const eco = new EcoAI({ client: openai, semantic: true });
 
 // Custom threshold
 const eco = new EcoAI({
   client: openai,
   semantic: {
-    threshold: 0.92,   // lower = more aggressive matching (more hits, more risk)
+    threshold: 0.92,
     embeddingModel: 'text-embedding-3-small',
     openaiApiKey: process.env.OPENAI_API_KEY,
+  },
+});
+
+// Bring your own embedding function — any provider, any model
+const eco = new EcoAI({
+  client: anthropic,
+  semantic: {
+    threshold: 0.92,
+    embedFn: async (text) => {
+      const res = await cohere.embed({ texts: [text], model: 'embed-english-v3.0' });
+      return res.embeddings[0];
+    },
   },
 });
 ```
@@ -38,12 +50,23 @@ const eco = new EcoAI({
 ```python
 from ecoai import EcoAI, SemanticConfig
 
+# Default (OpenAI text-embedding-3-small)
 eco = EcoAI(
     client=client,
-    semantic=SemanticConfig(
-        threshold=0.95,
-        embedding_model="text-embedding-3-small",
-    ),
+    semantic=SemanticConfig(threshold=0.95),
+)
+
+# Bring your own embedding function — any provider, any model
+import cohere
+
+co = cohere.Client(api_key=os.environ["COHERE_API_KEY"])
+
+def my_embed(text: str) -> list[float]:
+    return co.embed(texts=[text], model="embed-english-v3.0").embeddings[0]
+
+eco = EcoAI(
+    client=client,
+    semantic=SemanticConfig(threshold=0.95, embed_fn=my_embed),
 )
 ```
 
@@ -86,9 +109,15 @@ eco.chat.completions.create(model="gpt-4o", messages=[
 
 ## Requirements
 
+**Using the default OpenAI embeddings:**
 - An OpenAI API key (`OPENAI_API_KEY` env var), even when using Anthropic or Gemini clients.
 - `openai` package installed (`pip install openai` / `npm install openai`).
 - Embeddings cost: `text-embedding-3-small` is $0.020 per 1M tokens (~$0.000002 per prompt).
+
+**Using a custom `embedFn` / `embed_fn`:**
+- No OpenAI dependency required.
+- Install and configure whichever embedding provider you choose.
+- Your function must return a plain list/array of floats (the embedding vector). All vectors in one EcoAI instance must have the same dimension.
 
 ---
 
@@ -103,10 +132,10 @@ When semantic caching is active:
 
 ## Excluding specific calls
 
-Multimodal requests are automatically excluded. To force an exact-match call:
+Multimodal requests are automatically excluded. To bypass semantic matching for a specific text call, call the underlying provider client directly:
 
 ```typescript
-// JS — pass the raw client directly for this call
+// JS — bypasses EcoAI entirely for this call
 const response = await openai.chat.completions.create({ model: 'gpt-4o', messages: [...] });
 ```
 
@@ -115,13 +144,18 @@ const response = await openai.chat.completions.create({ model: 'gpt-4o', message
 response = client.chat.completions.create(model="gpt-4o", messages=[...])
 ```
 
+> **Roadmap:** A per-call override (`ecoai: { semantic: false }`) is planned so you can bypass semantic matching without leaving the `eco` wrapper. Until then, call the underlying client directly.
+
 ---
 
 ## Storage of embeddings
 
-Embeddings are stored in-process in a `dict` keyed by SHA-256 hash of the prompt. They are **not** persisted to SQLite or Redis — they are recomputed on next startup. This means:
+::: warning Embeddings do not survive restarts
+Embeddings are stored **in-memory only** — they are not persisted to SQLite or Redis. After a process restart:
+- All your **cached responses remain intact**.
+- The **embedding index is empty**. Semantic matching rebuilds gradually as new calls come in — each cache miss regenerates and stores the embedding.
 
-- After a process restart, the first call to each unique prompt generates a fresh embedding.
-- In multi-process deployments, embeddings are not shared between processes.
+In practice this means your semantic hit rate may dip briefly after a restart before recovering. Your exact-match hit rate is unaffected.
+:::
 
-For production multi-process setups with semantic caching, use Redis storage. The response is cached in Redis but embeddings remain in-process — each process builds its own embedding index over time.
+In multi-process deployments, each process builds its own embedding index independently. Use Redis storage so cached responses are shared across processes — but expect each process to rebuild its own in-memory embedding index over time.

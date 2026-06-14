@@ -6,41 +6,50 @@ A local analytics dashboard for monitoring cache performance, usage, and savings
 
 ## Starting the dashboard
 
-### npm SDK
+### Python SDK (recommended for standalone use)
+
+The Python dashboard ships **inside the `ecoai-python` package** — no Node.js, no extra setup.
+
 ```bash
-# From your project (requires the EcoAI monorepo to be set up)
-npx ecoai dashboard
-
-# With a custom database path
-ECOAI_DB_PATH=/path/to/.ecoai/usage.db npx ecoai dashboard
-
-# Custom port (flag takes precedence over env var)
-npx ecoai dashboard --port 8080
-ECOAI_DASHBOARD_PORT=8080 npx ecoai dashboard
-```
-
-Opens at `http://localhost:3001` by default.
-
-### Python SDK
-```bash
-# No Node.js or pnpm required
+# After pip install ecoai-python
 python -m ecoai dashboard
 
+# Or using the installed script
+ecoai dashboard
+
 # Custom path and port
-python -m ecoai dashboard --db /path/to/.ecoai/usage.db --port 8080
+python -m ecoai dashboard --db /path/to/.ecoai/usage.db --port 7315
 
 # Suppress auto-opening the browser
 python -m ecoai dashboard --no-browser
 
-# After pip install ecoai-python
-ecoai dashboard
-```
-
-The Python dashboard opens at `http://localhost:7315` by default. Override the port with `--port` or the `ECOAI_DASHBOARD_PORT` environment variable:
-
-```bash
+# Set port via environment variable
 ECOAI_DASHBOARD_PORT=8080 python -m ecoai dashboard
 ```
+
+Opens at `http://localhost:7315` by default.
+
+### npm SDK
+
+::: warning Requires the EcoAI monorepo
+`npx ecoai dashboard` only works when you have the [EcoAI monorepo](https://github.com/HassanRasoo98/ecoai) cloned and set up — it is **not** bundled into the `eco-ai` npm package itself. If you just want a dashboard, use the Python SDK's standalone server above (it reads the same SQLite schema).
+:::
+
+```bash
+# From the cloned monorepo root
+pnpm dashboard
+
+# With a custom database path
+ECOAI_DB_PATH=/path/to/.ecoai/usage.db pnpm dashboard
+
+# Custom port
+npx ecoai dashboard --port 3001
+ECOAI_DASHBOARD_PORT=3001 npx ecoai dashboard
+```
+
+Opens at `http://localhost:3001` by default.
+
+> **Note:** The npm dashboard defaults to port **3001** while the Python dashboard defaults to **7315**. If you run both side-by-side, use `--port` to pick distinct ports.
 
 ---
 

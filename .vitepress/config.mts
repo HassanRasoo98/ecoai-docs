@@ -19,8 +19,10 @@ export default defineConfig({
       {
         text: 'GitHub',
         items: [
-          { text: 'JS SDK', link: 'https://github.com/HassanRasoo98/ecoai' },
-          { text: 'Python SDK', link: 'https://github.com/HassanRasoo98/ecoai-python' },
+          { text: 'JS SDK repo', link: 'https://github.com/HassanRasoo98/ecoai' },
+          { text: 'Python SDK repo', link: 'https://github.com/HassanRasoo98/ecoai-python' },
+          { text: 'Issues / feedback', link: 'https://github.com/HassanRasoo98/ecoai/issues' },
+          { text: 'Contributing', link: 'https://github.com/HassanRasoo98/ecoai/blob/main/CONTRIBUTING.md' },
         ],
       },
     ],
