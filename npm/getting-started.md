@@ -6,6 +6,8 @@
 npm install eco-ai
 ```
 
+**[eco-ai on npm](https://www.npmjs.com/package/eco-ai)**
+
 Install whichever provider SDKs you use:
 
 ```bash

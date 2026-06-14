@@ -6,14 +6,17 @@
 pip install ecoai-python
 
 # With provider extras (install whichever you use)
-pip install "ecoai-python[openai]"      # OpenAI
-pip install "ecoai-python[anthropic]"   # Anthropic
-pip install "ecoai-python[gemini]"      # Google Gemini
-pip install "ecoai-python[redis]"       # Redis storage backend
-pip install "ecoai-python[all]"         # all of the above
+pip install "ecoai-python[openai]"          # OpenAI
+pip install "ecoai-python[anthropic]"       # Anthropic
+pip install "ecoai-python[gemini]"          # Google Gemini (google-generativeai SDK)
+pip install "ecoai-python[gemini-genai]"    # Google Gemini (google-genai SDK)
+pip install "ecoai-python[redis]"           # Redis storage backend
+pip install "ecoai-python[all]"             # all of the above
 ```
 
 **Requirements**: Python 3.10+
+
+**[ecoai-python on PyPI](https://pypi.org/project/ecoai-python/)**
 
 ---
 
@@ -62,7 +65,26 @@ print(response.content[0].text)
 
 ### Google Gemini
 
-```python
+EcoAI supports both the old `google-generativeai` SDK and the new `google-genai` SDK. Pass your client directly — the SDK is detected automatically.
+
+::: code-group
+
+```python [google-genai (new SDK)]
+import os
+from google import genai
+from ecoai import EcoAI
+
+client = genai.Client(api_key=os.environ["GOOGLE_API_KEY"])
+eco = EcoAI(client=client)
+
+response = eco.models.generate_content(
+    model="gemini-2.0-flash",
+    contents="What causes the northern lights?",
+)
+print(response.text)
+```
+
+```python [google-generativeai (old SDK)]
 import os
 import google.generativeai as genai
 from ecoai import EcoAI
@@ -74,6 +96,8 @@ eco = EcoAI(client=model)
 response = eco.generate_content("What causes the northern lights?")
 print(response.text)
 ```
+
+:::
 
 > **That's the entire integration.** No new infrastructure. No config files. No account needed. EcoAI stores responses in a local SQLite file at `.ecoai/cache.db` by default.
 

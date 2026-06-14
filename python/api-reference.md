@@ -13,7 +13,7 @@ eco = EcoAI(client=openai_client)
 
 | Parameter | Type | Default | Description |
 |---|---|---|---|
-| `client` | `OpenAI \| Anthropic \| GenerativeModel` | required | Your existing provider client |
+| `client` | `OpenAI \| Anthropic \| GenerativeModel \| genai.Client` | required | Your existing provider client |
 | `mode` | `"dev" \| "prod"` | `"dev"` | `dev` = cache forever; `prod` = apply TTL |
 | `storage` | `"sqlite" \| "redis" \| "memory"` | `"sqlite"` | Cache storage backend |
 | `sqlite_path` | `str` | `".ecoai/cache.db"` | SQLite file path |
@@ -92,19 +92,55 @@ response = eco.messages.create(
 print(response.content[0].text)
 ```
 
-### Gemini — `eco.generate_content(prompt_or_parts)`
+### Gemini (old SDK) — `eco.generate_content(contents, **kwargs)`
+
+For `google.generativeai.GenerativeModel` clients. The method signature mirrors the underlying SDK.
 
 ```python
 # Simple string prompt
 response = eco.generate_content("What is the capital of France?")
 print(response.text)
 
-# Contents format (multi-turn, multimodal)
-response = eco.generate_content({
-    "contents": [{"role": "user", "parts": [{"text": "Explain photosynthesis."}]}],
-    "generationConfig": {"temperature": 0.9, "maxOutputTokens": 500},
-})
+# With generation config
+response = eco.generate_content(
+    "Explain photosynthesis.",
+    generation_config={"temperature": 0.9, "max_output_tokens": 500},
+)
+
+# Streaming bypasses cache
+stream = eco.generate_content("Tell me a poem.", stream=True)
+for chunk in stream:
+    print(chunk.text, end="", flush=True)
 ```
+
+### Gemini (new SDK) — `eco.models.generate_content(model, contents, **kwargs)`
+
+For `google.genai.Client` clients. `eco.models` mirrors the `client.models` namespace from the `google-genai` SDK.
+
+```python
+response = eco.models.generate_content(
+    model="gemini-2.0-flash",
+    contents="What is the capital of France?",
+)
+print(response.text)
+
+# With generation config
+from google.genai import types
+response = eco.models.generate_content(
+    model="gemini-2.0-flash",
+    contents="Explain photosynthesis.",
+    config=types.GenerateContentConfig(temperature=0.9, max_output_tokens=500),
+)
+
+# Streaming bypasses cache
+response = eco.models.generate_content(
+    model="gemini-2.0-flash",
+    contents="Tell me a poem.",
+    stream=True,
+)
+```
+
+**Cache hit response (both SDKs):** On a cache hit, EcoAI returns a `GeminiCachedResponse` — a lightweight object with `.text`, `.candidates`, and `.usage_metadata`. On a cache miss, the real SDK response object is returned.
 
 ---
 

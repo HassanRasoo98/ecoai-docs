@@ -48,6 +48,8 @@ pip install ecoai-python
 
 :::
 
+**[eco-ai on npm](https://www.npmjs.com/package/eco-ai) · [ecoai-python on PyPI](https://pypi.org/project/ecoai-python/)**
+
 ## Quickstart
 
 ::: code-group
