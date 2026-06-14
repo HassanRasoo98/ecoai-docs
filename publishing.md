@@ -1,6 +1,6 @@
 # Publishing Guide
 
-How to publish `ecoai` to npm and PyPI. Both packages use GitHub Actions for automated publishing triggered by git tags.
+How to publish `eco-ai` to npm and `ecoai-python` to PyPI. Both packages use GitHub Actions for automated publishing triggered by git tags.
 
 ---
 
@@ -24,11 +24,11 @@ Add a secret named `NPM_TOKEN` to the `ecoai` GitHub repository:
 #### For PyPI publishing (trusted publishing — no token needed)
 PyPI trusted publishing uses OIDC. The Python SDK's workflow is already configured for this, but you need to register the trust relationship on PyPI:
 
-1. Go to [pypi.org](https://pypi.org) → log in → your username → **Your projects** → **ecoai** (create the project first if it doesn't exist by doing a manual publish, see below)
+1. Go to [pypi.org](https://pypi.org) → log in → your username → **Your projects** → **ecoai-python** (create the project first if it doesn't exist by doing a manual publish, see below)
 2. Click **Manage** → **Publishing** → **Add a new publisher**
 3. Fill in:
-   - **PyPI project name**: `ecoai`
-   - **Owner**: your GitHub org/username (e.g. `ecoai-dev`)
+   - **PyPI project name**: `ecoai-python`
+   - **Owner**: your GitHub org/username (e.g. `HassanRasoo98`)
    - **Repository name**: `ecoai-python`
    - **Workflow name**: `ci.yml`
    - **Environment name**: `pypi`
@@ -75,7 +75,7 @@ The workflow will:
 3. Run `pnpm build`
 4. Run `pnpm publish --access public` using `NPM_TOKEN`
 
-Monitor the run at: `https://github.com/<org>/ecoai/actions`
+Monitor the run at: `https://github.com/HassanRasoo98/ecoai/actions`
 
 ### Manual publish (without GitHub Actions)
 
@@ -151,7 +151,7 @@ The workflow will:
 3. Run `uv build` (produces `dist/ecoai-0.2.0.tar.gz` and `dist/ecoai-0.2.0-py3-none-any.whl`)
 4. Publish to PyPI via `pypa/gh-action-pypi-publish` using OIDC (no token stored in GitHub)
 
-Monitor the run at: `https://github.com/<org>/ecoai-python/actions`
+Monitor the run at: `https://github.com/HassanRasoo98/ecoai-python/actions`
 
 ### Manual publish (without GitHub Actions)
 
@@ -184,7 +184,7 @@ twine upload dist/*
 To get a PyPI API token:
 1. Log in at [pypi.org](https://pypi.org)
 2. Your account → **Account settings** → **API tokens** → **Add API token**
-3. Scope: either "Entire account" or "Project: ecoai"
+3. Scope: either "Entire account" or "Project: ecoai-python"
 4. Copy the token (starts with `pypi-`)
 
 ### First-time publish (creating the project on PyPI)
@@ -206,12 +206,12 @@ uv publish --token pypi-your-token
 
 ```bash
 # Check the published version
-pip index versions ecoai
+pip index versions ecoai-python
 
 # Install and test in a fresh virtualenv
 python -m venv /tmp/test-ecoai-env
 source /tmp/test-ecoai-env/bin/activate
-pip install "ecoai[openai]"
+pip install "ecoai-python[openai]"
 python -c "from ecoai import EcoAI; print('ok', EcoAI)"
 ```
 
