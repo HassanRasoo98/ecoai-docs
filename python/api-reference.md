@@ -249,7 +249,7 @@ subcommands:
 
 dashboard options:
   --db PATH       Path to the usage SQLite database (default: .ecoai/usage.db)
-  --port PORT     Port to listen on (default: 3000)
+  --port PORT     Port to listen on (default: 7315, or $ECOAI_DASHBOARD_PORT)
   --no-browser    Do not open a browser tab automatically
 ```
 
@@ -258,6 +258,9 @@ Examples:
 python -m ecoai dashboard
 python -m ecoai dashboard --db /path/to/.ecoai/usage.db --port 8080 --no-browser
 ecoai dashboard  # after pip install ecoai-python
+
+# Set port via environment variable
+ECOAI_DASHBOARD_PORT=8080 python -m ecoai dashboard
 ```
 
 ---

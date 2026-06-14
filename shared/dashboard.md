@@ -13,7 +13,13 @@ npx ecoai dashboard
 
 # With a custom database path
 ECOAI_DB_PATH=/path/to/.ecoai/usage.db npx ecoai dashboard
+
+# Custom port (flag takes precedence over env var)
+npx ecoai dashboard --port 8080
+ECOAI_DASHBOARD_PORT=8080 npx ecoai dashboard
 ```
+
+Opens at `http://localhost:3001` by default.
 
 ### Python SDK
 ```bash
@@ -30,7 +36,11 @@ python -m ecoai dashboard --no-browser
 ecoai dashboard
 ```
 
-Both dashboards open at `http://localhost:3000` by default.
+The Python dashboard opens at `http://localhost:7315` by default. Override the port with `--port` or the `ECOAI_DASHBOARD_PORT` environment variable:
+
+```bash
+ECOAI_DASHBOARD_PORT=8080 python -m ecoai dashboard
+```
 
 ---
 

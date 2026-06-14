@@ -125,6 +125,8 @@ Environment variables are the second-highest priority (below programmatic config
 ECOAI_MODE=prod
 ECOAI_STORAGE=sqlite
 ECOAI_REDIS_URL=redis://localhost:6379
+ECOAI_DB_PATH=.ecoai/usage.db        # used by the dashboard CLI
+ECOAI_DASHBOARD_PORT=3001             # dashboard port (default: 3001)
 ```
 
 ### Settings file
@@ -287,9 +289,13 @@ pnpm dashboard
 
 # Point at a specific database
 ECOAI_DB_PATH=/path/to/.ecoai/usage.db npx ecoai dashboard
+
+# Custom port (flag takes precedence over env var)
+npx ecoai dashboard --port 8080
+ECOAI_DASHBOARD_PORT=8080 npx ecoai dashboard
 ```
 
-Opens at `http://localhost:3000`. See [Dashboard](../shared/dashboard.md) for full details.
+Opens at `http://localhost:3001` by default. See [Dashboard](../shared/dashboard.md) for full details.
 
 ---
 
