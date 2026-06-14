@@ -10,7 +10,6 @@ export default defineConfig({
   head: [['link', { rel: 'icon', href: '/ecoai-docs/favicon.ico' }]],
 
   themeConfig: {
-    logo: null,
     siteTitle: 'EcoAI',
 
     nav: [
@@ -48,10 +47,6 @@ export default defineConfig({
           { text: 'Dashboard', link: '/shared/dashboard' },
           { text: 'Semantic Caching', link: '/shared/semantic-caching' },
         ],
-      },
-      {
-        text: 'Publishing',
-        items: [{ text: 'Publishing Guide', link: '/publishing' }],
       },
     ],
 

@@ -60,9 +60,6 @@ After EcoAI   →  1 real call + 37 cached  →  $0.11 spent  →  97% saved
 - [Dashboard](shared/dashboard.md) — using the local analytics dashboard
 - [Semantic Caching](shared/semantic-caching.md) — similarity-based cache lookups
 
-### Publishing
-- [Publishing Guide](publishing.md) — how to publish both packages to npm and PyPI
-
 ---
 
 ## How it works
